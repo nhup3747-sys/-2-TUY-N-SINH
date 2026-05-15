@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đề 2 – Thi Vào Lớp 10 TPHCM 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f4ef;--surface:#fffdf9;--primary:#1a3a5c;--accent:#c0392b;--green:#1e7e34;--border:#ddd5c8;--text:#1a1a1a;--muted:#6b7280;--radius:10px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* INTRO */
+#intro{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a3a5c,#0d1f35);}
+.intro-card{background:var(--surface);border-radius:16px;padding:44px 36px;max-width:500px;width:93%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.35);}
+.intro-card .badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;}
+.intro-card h1{font-family:'Playfair Display',serif;font-size:24px;color:var(--primary);margin-bottom:6px;}
+.intro-card .sub{color:var(--muted);font-size:13px;margin-bottom:8px;line-height:1.6;}
+.intro-card .info-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0 24px;}
+.chip{background:#eef2f7;color:var(--primary);font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;}
+.intro-card input{width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:var(--radius);font-size:15px;font-family:inherit;outline:none;background:var(--bg);color:var(--text);margin-bottom:14px;transition:border-color .2s;}
+.intro-card input:focus{border-color:var(--primary);}
+.btn-primary{width:100%;padding:14px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .2s;}
+.btn-primary:hover{background:#0d1f35;}
+
+/* QUIZ */
+#quiz{display:none;}
+.quiz-header{position:sticky;top:0;z-index:100;background:var(--primary);color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(0,0,0,.2);}
+.qh-left .title{font-size:13px;font-weight:600;opacity:.9;}
+.qh-left .sname{font-size:12px;opacity:.65;margin-top:2px;}
+.timer{background:rgba(255,255,255,.15);border-radius:8px;padding:6px 14px;font-size:20px;font-weight:700;font-family:monospace;letter-spacing:2px;min-width:85px;text-align:center;}
+.timer.urgent{background:rgba(192,57,43,.8);animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+.prog-wrap{background:rgba(255,255,255,.15);height:3px;}
+.prog-fill{height:3px;background:#f39c12;transition:width .3s;width:0%;}
+
+.quiz-body{max-width:860px;margin:0 auto;padding:24px 18px 80px;}
+
+/* Section headers */
+.section-hdr{background:var(--primary);color:#fff;padding:10px 18px;border-radius:8px;margin:28px 0 16px;font-size:14px;font-weight:700;}
+.section-hdr span{opacity:.8;font-weight:400;font-size:13px;}
+
+/* Question card */
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:14px;}
+.qcard .qnum{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;margin-bottom:8px;}
+.qcard .qtext{font-size:15px;line-height:1.7;margin-bottom:14px;color:var(--text);}
+.qcard .qtext em{font-style:italic;color:#555;}
+
+/* MC options */
+.opts{display:flex;flex-direction:column;gap:7px;}
+.opt-lbl{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:14px;line-height:1.5;transition:all .15s;user-select:none;}
+.opt-lbl:hover{border-color:var(--primary);background:#eef2f7;}
+.opt-lbl input{display:none;}
+.opt-key{min-width:22px;height:22px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--muted);flex-shrink:0;margin-top:1px;transition:all .15s;}
+.opt-lbl.sel{border-color:var(--primary);background:#eef2f7;}
+.opt-lbl.sel .opt-key{background:var(--primary);color:#fff;}
+
+/* True/False */
+.tf-opts{display:flex;gap:10px;margin-top:4px;}
+.tf-btn{padding:8px 20px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;background:#fff;transition:all .15s;font-family:inherit;}
+.tf-btn:hover{border-color:var(--primary);}
+.tf-btn.sel-true{border-color:var(--green);background:#e8f5e9;color:var(--green);}
+.tf-btn.sel-false{border-color:var(--accent);background:#fdecea;color:var(--accent);}
+
+/* Essay */
+.essay-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:14px;font-family:inherit;resize:vertical;min-height:54px;outline:none;background:var(--bg);transition:border-color .2s;line-height:1.6;}
+.essay-input:focus{border-color:var(--primary);}
+.essay-hint{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* Submit */
+.submit-wrap{text-align:center;padding:28px 0 16px;}
+.btn-submit{background:var(--accent);color:#fff;border:none;border-radius:var(--radius);padding:14px 44px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 4px 16px rgba(192,57,43,.3);transition:background .2s;}
+.btn-submit:hover{background:#a93226;}
+
+/* RESULT */
+#result{display:none;}
+.res-header{background:linear-gradient(135deg,#1a3a5c,#0d1f35);color:#fff;padding:36px 20px 28px;text-align:center;}
+.res-header h2{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:4px;}
+.res-header .rsub{opacity:.7;font-size:13px;margin-bottom:20px;}
+.score-ring{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:120px;height:120px;border-radius:50%;border:4px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);margin-bottom:14px;}
+.score-ring .snum{font-size:36px;font-weight:700;line-height:1;}
+.score-ring .stot{font-size:13px;opacity:.7;}
+.res-stats{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:12px;}
+.sbox{background:rgba(255,255,255,.12);border-radius:10px;padding:10px 18px;text-align:center;}
+.sbox .sv{font-size:20px;font-weight:700;}
+.sbox .sl{font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:1px;}
+
+/* Retry banner */
+.retry-banner{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:16px 20px;margin:20px auto;max-width:860px;font-size:14px;line-height:1.6;}
+.retry-banner strong{color:#856404;}
+.retry-count{display:inline-block;background:#dc3545;color:#fff;border-radius:20px;padding:2px 10px;font-size:12px;font-weight:700;margin-left:6px;}
+
+.res-body{max-width:860px;margin:0 auto;padding:24px 18px 60px;}
+.sec-title{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:20px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.rcard{border-radius:10px;padding:15px 17px;margin-bottom:11px;border-left:4px solid transparent;font-size:14px;line-height:1.6;}
+.rcard.ok{background:#e8f5e9;border-color:var(--green);}
+.rcard.bad{background:#fdecea;border-color:var(--accent);}
+.rcard.partial{background:#fff8e1;border-color:#f39c12;}
+.rcard .rnum{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;}
+.rcard .rq{font-weight:500;margin-bottom:8px;}
+.rcard .ra{display:flex;flex-direction:column;gap:4px;font-size:13px;}
+.you-ans{color:var(--accent);}
+.correct-ans{color:var(--green);font-weight:600;}
+.partial-note{color:#856404;font-weight:600;}
+.skip-note{color:#b08040;font-weight:600;}
+.btn-retry{display:block;margin:0 auto 12px;padding:12px 32px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .2s;}
+.btn-retry:hover{background:#0d1f35;}
+.btn-print{display:block;margin:0 auto 20px;padding:12px 32px;background:#6c757d;color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .2s;}
+.btn-print:hover{background:#545b62;}
+
+@media(max-width:600px){.quiz-body{padding:14px 10px 70px;}.qcard{padding:15px;}.res-body{padding:14px 10px 50px;}.timer{font-size:16px;}}
+@media print{.quiz-header,.btn-retry,.btn-print,.btn-submit{display:none!important;}body{background:#fff;}.rcard{break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="intro-card">
+    <div class="badge">Tuyển Sinh Lớp 10 TPHCM</div>
+    <h1>ĐỀ SỐ 2 – NĂM HỌC 2025–2026</h1>
+    <p class="sub">Môn: Tiếng Anh &nbsp;|&nbsp; Thời gian: 30 phút<br>Trắc nghiệm + Tự luận</p>
+    <div class="info-row">
+      <span class="chip">📝 40 câu</span>
+      <span class="chip">⏱ 30 phút</span>
+      <span class="chip">🔄 Làm lại nếu > 5 sai</span>
+      <span class="chip">📊 Kết quả chi tiết</span>
+    </div>
+    <input type="text" id="studentName" placeholder="Nhập họ và tên của bạn..." maxlength="60"/>
+    <button class="btn-primary" onclick="startQuiz()">Bắt đầu làm bài →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz">
+  <div class="quiz-header">
+    <div class="qh-left">
+      <div class="title">ĐỀ 2 – Tuyển Sinh Lớp 10 TPHCM 2026</div>
+      <div class="sname" id="headerName"></div>
+    </div>
+    <div class="timer" id="timer">30:00</div>
+  </div>
+  <div class="prog-wrap"><div class="prog-fill" id="progFill"></div></div>
+  <div class="quiz-body" id="quizBody"></div>
+  <div class="submit-wrap">
+    <button class="btn-submit" onclick="submitQuiz()">Nộp bài & Xem kết quả</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="result">
+  <div class="res-header">
+    <h2 id="resName"></h2>
+    <div class="rsub" id="resSub"></div>
+    <div class="score-ring"><div class="snum" id="scoreNum"></div><div class="stot" id="scoreTot"></div></div>
+    <div class="res-stats">
+      <div class="sbox"><div class="sv" id="stCorrect"></div><div class="sl">Đúng</div></div>
+      <div class="sbox"><div class="sv" id="stWrong"></div><div class="sl">Sai</div></div>
+      <div class="sbox"><div class="sv" id="stSkip"></div><div class="sl">Bỏ qua</div></div>
+      <div class="sbox"><div class="sv" id="stTime"></div><div class="sl">Thời gian</div></div>
+      <div class="sbox" style="background:rgba(243,156,18,.25);border:1px solid rgba(243,156,18,.4)"><div class="sv" id="stRetry">0</div><div class="sl">Lần làm lại</div></div>
+    </div>
+  </div>
+  <div id="retryBanner"></div>
+  <div class="res-body">
+    <button class="btn-print" onclick="window.print()">📸 Chụp / In kết quả</button>
+    <button class="btn-retry" id="retryBtn" onclick="retryQuiz()" style="display:none">🔄 Làm lại (đổi thứ tự)</button>
+    <div class="sec-title">Chi tiết câu sai</div>
+    <div id="wrongDetail"></div>
+    <div class="sec-title" style="margin-top:20px">Tất cả câu hỏi</div>
+    <div id="allDetail"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA – 40 câu đề 2 HCM 2026
+// ══════════════════════════════════════════
+const ORIGINAL_QUESTIONS = [
+  // ── PHẦN I: TRẮC NGHIỆM (câu 1–14) ──
+  {id:1, type:'mc', section:'I', pts:0.25,
+   q:'Question 1. Which word has the underlined part pronounced differently from that of the others?',
+   opts:['pen<u>s</u>','bed<u>s</u>','lip<u>s</u>','bag<u>s</u>'], ans:2,
+   explain:'Âm cuối /p/ vô thanh → "s" đọc /s/. Các từ còn lại âm cuối hữu thanh → "s" đọc /z/.'},
+
+  {id:2, type:'mc', section:'I', pts:0.25,
+   q:'Question 2. Which word has the underlined part pronounced differently from that of the others?',
+   opts:['<u>ch</u>air','<u>ch</u>ief','ma<u>ch</u>ine','<u>ch</u>ild'], ans:2,
+   explain:'"machine" – "ch" đọc /ʃ/. Các từ còn lại "ch" đọc /tʃ/.'},
+
+  {id:3, type:'mc', section:'I', pts:0.25,
+   q:'Question 3. Which word has a different stress pattern from that of the others?',
+   opts:['politics','economics','physics','ethics'], ans:1,
+   explain:'"economics" nhấn âm tiết thứ 3 /ˌiːkəˈnɒmɪks/. Các từ còn lại nhấn âm tiết thứ 1.'},
+
+  {id:4, type:'mc', section:'I', pts:0.25,
+   q:'Question 4. Which word has a different stress pattern from that of the others?',
+   opts:['determine','undermine','examine','imagine'], ans:1,
+   explain:'"undermine" /ˌʌndəˈmaɪn/ nhấn âm tiết thứ 3. Các từ còn lại nhấn âm tiết thứ 2.'},
+
+  {id:5, type:'mc', section:'I', pts:0.25,
+   q:'Question 5. Tim: Do you want to go to the cinema tonight?\nLucy: I can\'t. I __________________ my grandmother. She\'s in hospital.',
+   opts:['visit','visited','am visiting','have visited'], ans:2,
+   explain:'Hiện tại tiếp diễn diễn tả kế hoạch tương lai gần đã được sắp xếp trước.'},
+
+  {id:6, type:'mc', section:'I', pts:0.25,
+   q:'Question 6. Teacher: Where should we gather for the class photo?\nStudent: I think we should meet ____________ the main entrance at noon.',
+   opts:['through','in','at','over'], ans:2,
+   explain:'"at the main entrance" = ở cổng chính. Giới từ "at" chỉ vị trí cụ thể.'},
+
+  {id:7, type:'mc', section:'I', pts:0.25,
+   q:"Question 7. Teacher: Why haven't you completed your assignment yet?\nStudent: I'm sorry, I've been dealing ____________ some family issues this week.",
+   opts:['to','with','on','for'], ans:1,
+   explain:'"deal with something" = giải quyết vấn đề gì đó. Cụm cố định.'},
+
+  {id:8, type:'mc', section:'I', pts:0.25,
+   q:"Question 8. Emma: Our science project is due next week. We should _____________ some research tonight.\nJack: I agree. I can search for information about renewable energy sources.",
+   opts:['carry out','put off','give up','turn down'], ans:0,
+   explain:'"carry out research" = tiến hành nghiên cứu. put off = trì hoãn, give up = từ bỏ, turn down = từ chối.'},
+
+  {id:9, type:'mc', section:'I', pts:0.25,
+   q:"Question 9. Anna: Did you return the book ____________ you borrowed from the library last week?\nDavid: Oh no! I completely forgot. It's due tomorrow.",
+   opts:['whom','who','which','where'], ans:2,
+   explain:'"which" dùng thay cho vật (the book). whom/who dùng cho người, where dùng cho nơi chốn.'},
+
+  {id:10, type:'mc', section:'I', pts:0.25,
+   q:"Question 10. Tom: How was the movie you watched last night?\nJerry: It was really ____________. I couldn't stop laughing throughout the whole film.",
+   opts:['boring','disappointing','amusing','frightening'], ans:2,
+   explain:'"amusing" = vui nhộn, gây cười. Phù hợp với ngữ cảnh cười suốt phim.'},
+
+  {id:11, type:'mc', section:'I', pts:0.25,
+   q:"Question 11. Teacher: You can join the school trip __________ you get permission from your parents.\nStudent: I'll ask them to sign the form tonight.",
+   opts:['because','so','as long as','even though'], ans:2,
+   explain:'"as long as" = miễn là, diễn tả điều kiện. because = vì, so = vì vậy, even though = mặc dù.'},
+
+  {id:12, type:'mc', section:'I', pts:0.25,
+   q:"Question 12. Nam: Did you hear about the new library opening next month?\nMai: Yes! It will provide a lot of valuable _____________ for our research projects.",
+   opts:['buildings','information','decoration','space'], ans:1,
+   explain:'"information" = thông tin, phù hợp với "research projects". Các đáp án khác không hợp nghĩa.'},
+
+  {id:13, type:'mc', section:'I', pts:0.25,
+   q:"Question 13. Teacher: Would you mind closing the window? It's getting cold.\nStudent: \"______________________________________\"",
+   opts:["Yes, I would.","Not at all. I'll do it right away.","I don't like cold weather.","The window is very nice."], ans:1,
+   explain:'"Not at all. I\'ll do it right away." = đáp lại lịch sự khi được nhờ vả.'},
+
+  {id:14, type:'mc', section:'I', pts:0.25,
+   q:'Question 14. Minh: "____________________________________"\nLan: I think we\'ll need to bring insect repellent and sunscreen.',
+   opts:['What should we pack for the camping trip?','Do you like camping in the mountains?','How far is the campsite from here?','When did you last go camping?'], ans:0,
+   explain:'Lan trả lời về đồ cần mang → câu hỏi phải hỏi về đồ dùng cho chuyến đi.'},
+
+  // ── PHẦN II: BIỂN BÁO (câu 15–16) ──
+  {id:15, type:'mc', section:'II', pts:0.25,
+   q:'Question 15. What does this yellow diamond-shaped traffic sign indicate?\n(Biển báo hình thoi màu vàng có biểu tượng xe đang trượt)',
+   opts:['Slippery road ahead','Winding road ahead','River crossing ahead','Vehicle breakdown area'], ans:0,
+   explain:'Biển hình thoi vàng + hình xe trượt = Đường trơn trượt phía trước.'},
+
+  {id:16, type:'mc', section:'II', pts:0.25,
+   q:'Question 16. When should drivers exercise extra caution according to this traffic sign?',
+   opts:['Only during snowfall','During rainy conditions','Only at night','Only during winter months'], ans:1,
+   explain:'Khi trời mưa, mặt đường ướt trơn → cần cẩn thận đặc biệt. Biển không giới hạn chỉ tuyết hay mùa đông.'},
+
+  // ── PHẦN III: ĐIỀN VÀO ĐV (câu 17–22) ──
+  {id:17, type:'mc', section:'III', pts:0.25,
+   q:'Question 17. The opportunity to represent our school fills me with _(17)_ enthusiasm.',
+   opts:['genuine','overwhelming','immense','tremendous'], ans:3,
+   explain:'"tremendous enthusiasm" = nhiệt huyết mãnh liệt, tự nhiên nhất. "tremendous" thường đi với "enthusiasm".'},
+
+  {id:18, type:'mc', section:'III', pts:0.25,
+   q:'Question 18. The professor mentioned that dedication and _(18)_ would determine our success.',
+   opts:['determination','diligence','resilience','perseverance'], ans:3,
+   explain:'"dedication and perseverance" = sự tận tâm và bền bỉ, cặp đôi tự nhiên trong văn phong học thuật.'},
+
+  {id:19, type:'mc', section:'III', pts:0.25,
+   q:'Question 19. The comprehensive materials you shared provided invaluable _(19)_.',
+   opts:['insights','assistance','support','resources'], ans:1,
+   explain:'"provided invaluable assistance" = cung cấp sự hỗ trợ vô giá. "assistance" đi tự nhiên với "provided".'},
+
+  {id:20, type:'mc', section:'III', pts:0.25,
+   q:'Question 20. Your innovative approach solved problems that seemed _(20)_ yesterday.',
+   opts:['formidable','insoluble','intractable','insurmountable'], ans:3,
+   explain:'"insurmountable" = không thể vượt qua, diễn tả vấn đề tưởng như không có lời giải.'},
+
+  {id:21, type:'mc', section:'III', pts:0.25,
+   q:'Question 21. The delicate equipment requires careful handling _(21)_ transportation.',
+   opts:['during','through','while','upon'], ans:0,
+   explain:'"during transportation" = trong suốt quá trình vận chuyển. "while" cần mệnh đề, không đứng trước danh từ.'},
+
+  {id:22, type:'mc', section:'III', pts:0.25,
+   q:"Question 22. I'll gather additional information _(22)_ reliable sources.",
+   opts:['about','for','from','at'], ans:2,
+   explain:'"information from sources" = thông tin từ các nguồn. Cấu trúc cố định.'},
+
+  // ── PHẦN IV: TRUE/FALSE + MC (câu 23–28) ──
+  {id:23, type:'tf', section:'IV', pts:0.25,
+   q:'Question 23. Sound waves travel faster on Mars than on Earth.',
+   ans:'False',
+   explain:'Sai. Trên sao Hỏa, bầu khí quyển mỏng khiến âm thanh yếu và tắt nhanh hơn, không phải di chuyển nhanh hơn.'},
+
+  {id:24, type:'tf', section:'IV', pts:0.25,
+   q:'Question 24. Gravity affects how percussion instruments perform in space environments.',
+   ans:'True',
+   explain:'Đúng. "On the Moon, traditional percussion instruments would behave unusually. A drummer\'s stick would fall more slowly."'},
+
+  {id:25, type:'tf', section:'IV', pts:0.25,
+   q:'Question 25. Temperature has no impact on musical instruments in extraterrestrial settings.',
+   ans:'False',
+   explain:'Sai. "Temperature variations across celestial bodies add another dimension" – nhiệt độ ảnh hưởng đến cao độ và tần số âm thanh.'},
+
+  {id:26, type:'tf', section:'IV', pts:0.25,
+   q:'Question 26. Virtual reality is being used to test how music might sound in space conditions.',
+   ans:'True',
+   explain:'Đúng. "Virtual reality simulations allow composers to experiment with these extraterrestrial conditions."'},
+
+  {id:27, type:'mc', section:'IV', pts:0.25,
+   q:'Question 27. According to the text, which factor would NOT make music sound different on other planets?',
+   opts:['The density of the atmosphere','The ambient temperature','The strength of gravity','The presence of an audience'], ans:3,
+   explain:'Bài không đề cập đến sự hiện diện của khán giả. 3 yếu tố kia đều được nêu rõ trong bài.'},
+
+  {id:28, type:'mc', section:'IV', pts:0.25,
+   q:'Question 28. All of the following are mentioned as challenges for extraterrestrial music EXCEPT _________.',
+   opts:['Notes fading quickly in thin atmospheres','Instruments producing overwhelming volume in dense atmospheres','Materials expanding or contracting due to temperature','Solar radiation damages electronic equipment'], ans:3,
+   explain:'Bài không nhắc đến bức xạ Mặt Trời làm hỏng thiết bị. Ba ý kia đều có trong bài đọc.'},
+
+  // ── PHẦN V: DẠNG TỪ (câu 29–34) ──
+  {id:29, type:'essay', section:'V', pts:0.25,
+   q:'Question 29. The young musician played with such _____________ that the audience gave him a standing ovation. (passionate)',
+   ans:'passion',
+   explain:'Sau "such" cần danh từ: passionate → passion (niềm đam mê).'},
+
+  {id:30, type:'essay', section:'V', pts:0.25,
+   q:'Question 30. Scientists are concerned about the _____________ of several animal species in the rainforest. (survive)',
+   ans:'survival',
+   explain:'Sau "the" cần danh từ: survive → survival (sự sống sót).'},
+
+  {id:31, type:'essay', section:'V', pts:0.25,
+   q:'Question 31. The _____________ of clean water to remote villages has improved the health of many children. (provide)',
+   ans:'provision',
+   explain:'Sau "The" cần danh từ: provide → provision (sự cung cấp).'},
+
+  {id:32, type:'essay', section:'V', pts:0.25,
+   q:'Question 32. My brother is _____________ about collecting rare stamps from around the world. (enthusiasm)',
+   ans:'enthusiastic',
+   explain:'Sau "is" cần tính từ: enthusiasm → enthusiastic (nhiệt tình, say mê).'},
+
+  {id:33, type:'essay', section:'V', pts:0.25,
+   q:'Question 33. The government has implemented _____________ measures to protect endangered wildlife. (conserve)',
+   ans:'conservation',
+   explain:'Trước "measures" cần danh từ mô tả loại biện pháp: conserve → conservation (sự bảo tồn).'},
+
+  {id:34, type:'essay', section:'V', pts:0.25,
+   q:'Question 34. We were surprised by his _____________ to finish the marathon despite his injury. (determine)',
+   ans:'determination',
+   explain:'Sau "his" cần danh từ: determine → determination (sự quyết tâm).'},
+
+  // ── PHẦN VI: TỪ ĐIỂN (câu 35–36) ──
+  {id:35, type:'essay', section:'VI', pts:0.25,
+   q:'Question 35. The celebrity was _____________ by fans despite wearing sunglasses and a hat in the crowded mall.',
+   ans:'easily recognized',
+   explain:'Ngữ cảnh: dù đội mũ kính nhưng vẫn bị nhận ra ngay → "easily recognized".'},
+
+  {id:36, type:'essay', section:'VI', pts:0.25,
+   q:'Question 36. The detective _____________ the symbol drawn on the mysterious note.',
+   ans:'vaguely recognized',
+   explain:'Ngữ cảnh: tờ giấy bí ẩn → thám tử chỉ nhận ra mơ hồ → "vaguely recognized".'},
+
+  // ── PHẦN VII: VIẾT LẠI (câu 37–40) ──
+  {id:37, type:'essay', section:'VII', pts:0.25,
+   q:'Question 37. Mount Everest is higher than any other mountain in the world.\n→ No other _____________________________________________.',
+   ans:'No other mountain in the world is as high as Mount Everest.',
+   altAns:['no other mountain in the world is as high as mount everest'],
+   explain:'Cấu trúc: No other + N + as/so + adj + as + S. Câu gốc so sánh hơn → viết lại bằng phủ định ngang bằng.'},
+
+  {id:38, type:'essay', section:'VII', pts:0.25,
+   q:'Question 38. She has lived in Paris since 2010.\n→ She _____________________________________________.',
+   ans:'She has been living in Paris since 2010.',
+   altAns:['she has been living in paris since 2010'],
+   explain:'Cấu trúc HTHT tiếp diễn: have/has been + V-ing. Hành động bắt đầu 2010 và còn tiếp diễn.'},
+
+  {id:39, type:'essay', section:'VII', pts:0.25,
+   q:"Question 39. The meeting was postponed due to the CEO's illness.\n→ The meeting _____________________________________________.",
+   ans:"The meeting was put off due to the CEO's illness.",
+   altAns:["the meeting was put off due to the ceo's illness",'the meeting was put off due to the ceos illness'],
+   explain:'"postpone" = "put off" = hoãn lại. Viết lại giữ nguyên cấu trúc bị động.'},
+
+  {id:40, type:'essay', section:'VII', pts:0.25,
+   q:'Question 40. The two companies decided to work together on the new project.\n→ The two _____________________________________________.',
+   ans:'The two companies decided to join forces on the new project.',
+   altAns:['the two companies decided to join forces on the new project'],
+   explain:'"work together" = "join forces" = hợp tác, chung sức.'},
+];
+
+const SECTION_INFO = {
+  'I':  {title:'I. Choose the word/phrase/sentence (A, B, C, or D) that best fits the space or best answers the question given in each sentence.', pts:'(3.5 pts)'},
+  'II': {title:'II. Look at the sign or the notice. Choose the best answer (A, B, C, or D) for questions 15 and 16.', pts:'(0.5 pt)'},
+  'III':{title:'III. Choose the word (A, B, C, or D) that best fits each space in the following passage.', pts:'(1.5 pts)'},
+  'IV': {title:'IV. Read the following leaflet DESIGNING MUSIC FOR NON-EARTH ENVIRONMENTS. Decide whether the statements from 23 to 26 are True or False and choose the correct answer (A, B, C, or D) to complete the statements in questions 27 and 28.', pts:'(1.5 pts)'},
+  'V':  {title:'V. Use the correct form of the word given in each sentence.', pts:'(1.5 pts)'},
+  'VI': {title:"VI. Look at the entry of the word 'recognize' in a dictionary. Use what you can get from the entry to complete the sentences with two or three words.", pts:'(0.5 pt)'},
+  'VII':{title:'VII. Rewrite each of the following sentences in another way so that it means almost the same as the sentence printed before it.', pts:'(1.0 pt)'},
+};
+
+const KEYS = ['A','B','C','D'];
+let questions = [];
+let timerInterval, startTime, elapsed = 0;
+const TOTAL_TIME = 30 * 60;
+let retryCount = 0;
+let studentName = '';
+
+// ── SHUFFLE ──
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function shuffleQuestions(qs) {
+  // Shuffle within each section, keep section order
+  const sections = ['I','II','III','IV','V','VI','VII'];
+  let result = [];
+  sections.forEach(sec => {
+    const secQs = qs.filter(q => q.section === sec);
+    result = result.concat(shuffle(secQs));
+  });
+  return result;
+}
+
+// ── START ──
+function startQuiz(isRetry = false) {
+  studentName = document.getElementById('studentName')?.value?.trim() || studentName;
+  if (!studentName) { alert('Vui lòng nhập họ và tên!'); return; }
+
+  if (isRetry) {
+    retryCount++;
+    questions = shuffleQuestions(ORIGINAL_QUESTIONS);
+  } else {
+    questions = [...ORIGINAL_QUESTIONS];
+  }
+
+  document.getElementById('headerName').textContent = studentName;
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  buildQuiz();
+  elapsed = 0;
+  startTime = Date.now();
+  clearInterval(timerInterval);
+  timerInterval = setInterval(updateTimer, 1000);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── BUILD QUIZ ──
+function buildQuiz() {
+  const body = document.getElementById('quizBody');
+  body.innerHTML = '';
+  let lastSection = '';
+
+  questions.forEach((q, i) => {
+    // Section header
+    if (q.section !== lastSection) {
+      lastSection = q.section;
+      const sec = SECTION_INFO[q.section];
+      const hdr = document.createElement('div');
+      hdr.className = 'section-hdr';
+      hdr.innerHTML = sec.title + ' <span>' + sec.pts + '</span>';
+      body.appendChild(hdr);
+
+      // Passage for section III
+      if (q.section === 'III') {
+        const pass = document.createElement('div');
+        pass.className = 'qcard';
+        pass.style.background = '#f0f4f8';
+        pass.innerHTML = `<div style="font-size:13px;line-height:1.8;color:#333">
+          <strong>Read the following letter and fill in blanks 17–22:</strong><br><br>
+          Dear Daniel,<br><br>
+          I'm writing regarding our upcoming science competition next month. The opportunity to represent our school fills me with <strong>(17)_______</strong> enthusiasm. The professor mentioned that dedication and <strong>(18)_______</strong> would determine our success. Knowledge and creativity are essential qualities for participants in this challenge. My research about renewable energy sources is progressing well. The comprehensive materials you shared provided invaluable <strong>(19)_______</strong>. The brilliant experiment you designed impressed everyone on the committee. Your innovative approach solved problems that seemed <strong>(20)_______</strong> yesterday. The microscope in laboratory B needs calibration before Friday. The delicate equipment requires careful handling <strong>(21)_______</strong> transportation. Throughout the preparation period, we should meet regularly after classes. Between our study sessions, I'll gather additional information <strong>(22)_______</strong> reliable sources. Beneath all this pressure lies an amazing chance for academic growth.<br><br>
+          <em>Your teammate, LK</em>
+        </div>`;
+        body.appendChild(pass);
+      }
+
+      // Passage for section IV
+      if (q.section === 'IV') {
+        const pass = document.createElement('div');
+        pass.className = 'qcard';
+        pass.style.background = '#f0f4f8';
+        pass.innerHTML = `<div style="font-size:13px;line-height:1.8;color:#333">
+          <strong>DESIGNING MUSIC FOR NON-EARTH ENVIRONMENTS</strong><br><br>
+          Have you ever wondered how music might transform beyond our planet? Scientists and composers are now collaborating to create melodies that adapt to alien atmospheres. This fascinating field explores how different planetary conditions affect sound waves, requiring innovative approaches to musical composition. On Mars, the thin atmosphere would make notes travel differently, producing softer tones that fade quickly. Instruments designed for Martian concerts would need modifications to generate adequate volume. In contrast, Venus presents the opposite challenge—its dense atmosphere would amplify sound, potentially turning gentle tunes into overwhelming noise. Gravity also plays a crucial role. On the Moon, where gravity is approximately one-sixth of Earth's, traditional percussion instruments would behave unusually. A drummer's stick would fall more slowly, altering rhythm possibilities. Meanwhile, string instruments might require adjustment, as reduced gravity would change tension patterns.<br><br>
+          Temperature variations across celestial bodies add another dimension. Extremely cold environments like Jupiter's moons would contract materials, raising pitch, while hot planets might expand instruments, lowering frequencies. Virtual reality simulations allow composers to experiment with these extraterrestrial conditions before actual space performances occur. These musical innovations aren't merely artistic experiments—they help scientists understand atmospheric physics and could eventually provide entertainment for future space travelers and colonists.
+        </div>`;
+        body.appendChild(pass);
+      }
+    }
+
+    // Question card
+    const card = document.createElement('div');
+    card.className = 'qcard';
+    card.id = 'qcard-' + i;
+
+    const qnum = document.createElement('div');
+    qnum.className = 'qnum';
+    qnum.textContent = 'Câu ' + q.id + (retryCount > 0 ? ' (lần ' + (retryCount + 1) + ')' : '');
+    card.appendChild(qnum);
+
+    const qtext = document.createElement('div');
+    qtext.className = 'qtext';
+    qtext.innerHTML = q.q.replace(/\n/g, '<br>');
+    card.appendChild(qtext);
+
+    if (q.type === 'mc') {
+      const opts = document.createElement('div');
+      opts.className = 'opts';
+      q.opts.forEach((o, j) => {
+        const lbl = document.createElement('label');
+        lbl.className = 'opt-lbl';
+        lbl.id = `lbl-${i}-${j}`;
+        lbl.innerHTML = `<input type="radio" name="q${i}" value="${j}">
+          <span class="opt-key">${KEYS[j]}</span>
+          <span>${o}</span>`;
+        lbl.onclick = () => selectMC(i, j);
+        opts.appendChild(lbl);
+      });
+      card.appendChild(opts);
+
+    } else if (q.type === 'tf') {
+      const tfDiv = document.createElement('div');
+      tfDiv.className = 'tf-opts';
+      ['True','False'].forEach(v => {
+        const btn = document.createElement('button');
+        btn.className = 'tf-btn';
+        btn.textContent = v;
+        btn.id = `tf-${i}-${v}`;
+        btn.onclick = () => selectTF(i, v, btn);
+        tfDiv.appendChild(btn);
+      });
+      card.appendChild(tfDiv);
+
+    } else if (q.type === 'essay') {
+      const inp = document.createElement('input');
+      inp.type = 'text';
+      inp.className = 'essay-input';
+      inp.id = `essay-${i}`;
+      inp.placeholder = 'Nhập câu trả lời...';
+      inp.oninput = updateProgress;
+      card.appendChild(inp);
+      const hint = document.createElement('div');
+      hint.className = 'essay-hint';
+      hint.textContent = '✏️ Viết in hoa hoặc in thường đều được tính điểm.';
+      card.appendChild(hint);
+    }
+
+    body.appendChild(card);
+  });
+}
+
+function selectMC(qi, oi) {
+  for (let j = 0; j < 4; j++) {
+    const l = document.getElementById(`lbl-${qi}-${j}`);
+    if (l) l.classList.remove('sel');
+  }
+  const chosen = document.getElementById(`lbl-${qi}-${oi}`);
+  if (chosen) chosen.classList.add('sel');
+  const r = document.querySelector(`input[name="q${qi}"][value="${oi}"]`);
+  if (r) r.checked = true;
+  updateProgress();
+}
+
+function selectTF(qi, val, btn) {
+  const t = document.getElementById(`tf-${qi}-True`);
+  const f = document.getElementById(`tf-${qi}-False`);
+  if (t) { t.classList.remove('sel-true', 'sel-false'); }
+  if (f) { f.classList.remove('sel-true', 'sel-false'); }
+  btn.classList.add(val === 'True' ? 'sel-true' : 'sel-false');
+  updateProgress();
+}
+
+function updateProgress() {
+  let done = 0;
+  questions.forEach((q, i) => {
+    if (q.type === 'mc') {
+      if (document.querySelector(`input[name="q${i}"]:checked`)) done++;
+    } else if (q.type === 'tf') {
+      const t = document.getElementById(`tf-${i}-True`);
+      const f = document.getElementById(`tf-${i}-False`);
+      if (t?.classList.contains('sel-true') || f?.classList.contains('sel-false')) done++;
+      if (f?.classList.contains('sel-false') || t?.classList.contains('sel-true')) done++;
+      // simplified
+      if (document.getElementById(`tf-${i}-True`)?.classList.contains('sel-true') ||
+          document.getElementById(`tf-${i}-False`)?.classList.contains('sel-false')) done++;
+    } else {
+      const v = document.getElementById(`essay-${i}`)?.value?.trim();
+      if (v) done++;
+    }
+  });
+  document.getElementById('progFill').style.width = (done / questions.length * 100) + '%';
+}
+
+function updateTimer() {
+  elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const rem = TOTAL_TIME - elapsed;
+  if (rem <= 0) { clearInterval(timerInterval); document.getElementById('timer').textContent = '00:00'; submitQuiz(); return; }
+  const m = Math.floor(rem / 60).toString().padStart(2, '0');
+  const s = (rem % 60).toString().padStart(2, '0');
+  document.getElementById('timer').textContent = `${m}:${s}`;
+  if (rem <= 300) document.getElementById('timer').classList.add('urgent');
+}
+
+// ── CHECK ESSAY ──
+function checkEssay(userRaw, q) {
+  const user = userRaw.trim().toLowerCase().replace(/[.!?,]/g, '').replace(/\s+/g, ' ');
+  const correct = q.ans.toLowerCase().replace(/[.!?,]/g, '').replace(/\s+/g, ' ');
+  if (user === correct) return 'correct';
+  if (q.altAns) {
+    for (const alt of q.altAns) {
+      const a = alt.toLowerCase().replace(/[.!?,]/g, '').replace(/\s+/g, ' ');
+      if (user === a) return 'correct';
+    }
+  }
+  // partial: check key words
+  const correctWords = correct.split(' ').filter(w => w.length > 3);
+  const userWords = user.split(' ');
+  const matchCount = correctWords.filter(w => userWords.includes(w)).length;
+  if (matchCount >= Math.ceil(correctWords.length * 0.6)) return 'partial';
+  return 'wrong';
+}
+
+// ── SUBMIT ──
+function submitQuiz() {
+  clearInterval(timerInterval);
+  const results = questions.map((q, i) => {
+    let userAns, status;
+    if (q.type === 'mc') {
+      const r = document.querySelector(`input[name="q${i}"]:checked`);
+      userAns = r ? parseInt(r.value) : -1;
+      status = userAns === -1 ? 'skip' : (userAns === q.ans ? 'correct' : 'wrong');
+    } else if (q.type === 'tf') {
+      const t = document.getElementById(`tf-${i}-True`);
+      const f = document.getElementById(`tf-${i}-False`);
+      if (t?.classList.contains('sel-true')) userAns = 'True';
+      else if (f?.classList.contains('sel-false')) userAns = 'False';
+      else userAns = null;
+      if (!userAns) status = 'skip';
+      else status = userAns === q.ans ? 'correct' : 'wrong';
+    } else {
+      userAns = document.getElementById(`essay-${i}`)?.value || '';
+      if (!userAns.trim()) status = 'skip';
+      else status = checkEssay(userAns, q);
+    }
+    return { q, userAns, status };
+  });
+
+  let correct = 0, wrong = 0, skip = 0, partial = 0;
+  results.forEach(r => {
+    if (r.status === 'correct') correct++;
+    else if (r.status === 'wrong') wrong++;
+    else if (r.status === 'skip') skip++;
+    else if (r.status === 'partial') { partial++; }
+  });
+  const total = questions.length;
+  const pct = Math.round((correct + partial * 0.5) / total * 100);
+  const wrongCount = wrong + skip + partial;
+
+  const em = Math.floor(elapsed / 60).toString().padStart(2, '0');
+  const es = (elapsed % 60).toString().padStart(2, '0');
+
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('resName').textContent = studentName;
+  document.getElementById('resSub').textContent = `Đề 2 – Thi vào lớp 10 TPHCM | Lần ${retryCount + 1} | ${new Date().toLocaleTimeString('vi-VN')}`;
+  document.getElementById('scoreNum').textContent = pct + '%';
+  document.getElementById('scoreTot').textContent = correct + '/' + total;
+  document.getElementById('stCorrect').textContent = correct;
+  document.getElementById('stWrong').textContent = wrong + partial;
+  document.getElementById('stSkip').textContent = skip;
+  document.getElementById('stTime').textContent = `${em}:${es}`;
+  document.getElementById('stRetry').textContent = retryCount;
+
+  // Retry banner
+  const banner = document.getElementById('retryBanner');
+  const retryBtn = document.getElementById('retryBtn');
+  if (wrongCount > 5) {
+    banner.innerHTML = `<div class="retry-banner" style="margin:16px auto;max-width:860px;">
+      <strong>⚠️ Bạn có ${wrongCount} câu chưa đúng</strong><span class="retry-count">Lần làm: ${retryCount + 1}</span><br><br>
+      Các lỗi bạn đang mắc phải:<br>
+      ${results.filter(r => r.status !== 'correct').map(r => `• <strong>Câu ${r.q.id}</strong>: ${r.q.explain}`).join('<br>')}
+      <br><br>Hãy xem kỹ lỗi sai bên dưới rồi <strong>làm lại</strong> nhé! Thứ tự câu sẽ được xáo trộn.
+    </div>`;
+    retryBtn.style.display = 'block';
+  } else {
+    banner.innerHTML = '';
+    retryBtn.style.display = 'none';
+  }
+
+  // Wrong detail
+  const wrongDiv = document.getElementById('wrongDetail');
+  wrongDiv.innerHTML = '';
+  const badOnes = results.filter(r => r.status !== 'correct');
+  if (badOnes.length === 0) {
+    wrongDiv.innerHTML = '<div style="color:#1e7e34;font-weight:600;padding:14px;text-align:center">🎉 Tuyệt vời! Tất cả đều đúng!</div>';
+  } else {
+    badOnes.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'rcard ' + (r.status === 'partial' ? 'partial' : 'bad');
+      let youStr = '', corrStr = '';
+      if (r.q.type === 'mc') {
+        youStr = r.userAns === -1 ? '<span class="skip-note">⚠ Chưa trả lời</span>' : `<span class="you-ans">✗ Bạn chọn: ${KEYS[r.userAns]}. ${r.q.opts[r.userAns]}</span>`;
+        corrStr = `<span class="correct-ans">✓ Đáp án: ${KEYS[r.q.ans]}. ${r.q.opts[r.q.ans]}</span>`;
+      } else if (r.q.type === 'tf') {
+        youStr = !r.userAns ? '<span class="skip-note">⚠ Chưa trả lời</span>' : `<span class="you-ans">✗ Bạn chọn: ${r.userAns}</span>`;
+        corrStr = `<span class="correct-ans">✓ Đáp án: ${r.q.ans}</span>`;
+      } else {
+        const label = r.status === 'skip' ? '<span class="skip-note">⚠ Chưa trả lời</span>' : (r.status === 'partial' ? `<span class="partial-note">⚡ Gần đúng: "${r.userAns}"</span>` : `<span class="you-ans">✗ Bạn viết: "${r.userAns}"</span>`);
+        youStr = label;
+        corrStr = `<span class="correct-ans">✓ Đáp án đúng: <strong>${r.q.ans}</strong></span>`;
+      }
+      card.innerHTML = `<div class="rnum">Câu ${r.q.id}</div>
+        <div class="rq">${r.q.q.replace(/\n/g, '<br>')}</div>
+        <div class="ra">${youStr}${corrStr}<span style="color:#555;font-size:12px;margin-top:4px">💡 ${r.q.explain}</span></div>`;
+      wrongDiv.appendChild(card);
+    });
+  }
+
+  // All detail
+  const allDiv = document.getElementById('allDetail');
+  allDiv.innerHTML = '';
+  results.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'rcard ' + (r.status === 'correct' ? 'ok' : r.status === 'partial' ? 'partial' : 'bad');
+    let youStr = '', corrStr = '';
+    if (r.q.type === 'mc') {
+      youStr = r.userAns === -1 ? '<span class="skip-note">⚠ Bỏ qua</span>' : `<span class="${r.status === 'correct' ? 'correct-ans' : 'you-ans'}">${r.status === 'correct' ? '✓' : '✗'} Bạn chọn: ${KEYS[r.userAns]}. ${r.q.opts[r.userAns]}</span>`;
+      if (r.status !== 'correct') corrStr = `<span class="correct-ans">✓ Đáp án: ${KEYS[r.q.ans]}. ${r.q.opts[r.q.ans]}</span>`;
+    } else if (r.q.type === 'tf') {
+      youStr = !r.userAns ? '<span class="skip-note">⚠ Bỏ qua</span>' : `<span class="${r.status === 'correct' ? 'correct-ans' : 'you-ans'}">${r.status === 'correct' ? '✓' : '✗'} Bạn chọn: ${r.userAns}</span>`;
+      if (r.status !== 'correct') corrStr = `<span class="correct-ans">✓ Đáp án: ${r.q.ans}</span>`;
+    } else {
+      const label = !r.userAns.trim() ? '<span class="skip-note">⚠ Bỏ qua</span>' : (r.status === 'partial' ? `<span class="partial-note">⚡ Gần đúng: "${r.userAns}"</span>` : `<span class="${r.status === 'correct' ? 'correct-ans' : 'you-ans'}">${r.status === 'correct' ? '✓' : '✗'} Bạn viết: "${r.userAns}"</span>`);
+      youStr = label;
+      if (r.status !== 'correct') corrStr = `<span class="correct-ans">✓ Đúng: <strong>${r.q.ans}</strong></span>`;
+    }
+    card.innerHTML = `<div class="rnum">Câu ${r.q.id} ${r.status === 'correct' ? '✓' : r.status === 'partial' ? '⚡' : '✗'}</div>
+      <div class="rq">${r.q.q.replace(/\n/g, '<br>')}</div>
+      <div class="ra">${youStr}${corrStr}</div>`;
+    allDiv.appendChild(card);
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function retryQuiz() {
+  startQuiz(true);
+}
+</script>
+</body>
+</html>
